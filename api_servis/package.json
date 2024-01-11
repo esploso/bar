@@ -4,7 +4,7 @@
   "description": "Aleksandar Maric RN25/2019",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "node app.js"
   },
   "author": "",
   "license": "ISC",
