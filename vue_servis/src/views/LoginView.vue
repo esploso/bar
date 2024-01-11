@@ -89,7 +89,7 @@ const username = ref('');
 const password = ref('');
 const login = async () => {
   try {
-    const response = await fetch('http://localhost:'+store.auth+'login', {
+    const response = await fetch(store.auth+'login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ const login = async () => {
     localStorage.setItem('jwtToken', jwtToken)
     const decoded = jwtDecode(jwtToken)
     if (decoded.admin) {
-      window.location.href = "http://localhost:3000/admin/"
+      window.location.href = "https://zinjos-bar.onrender.com/admin"
     } else {
       store.loggedIn = true;
       store.token = jwtToken
