@@ -7,9 +7,9 @@ const store = reactive({
   loggedIn: false,
   token: '',
   cart: [],
-  api: '3000/api/',
-  auth: '3000/auth/',
-  admin: '3000/admin/'
+  api: 'https://zinjos-bar.onrender.com/api/',
+  auth: 'https://zinjos-bar.onrender.com/auth/',
+  admin: 'https://zinjos-bar.onrender.com/admin/'
 })
 
 export default store
