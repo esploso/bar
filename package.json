@@ -9,7 +9,7 @@
     "service2": "cd app_servis && npm run dev",
     "service3": "cd auth_server && npm run dev",
     "service4": "cd vue_servis && npm run dev",
-    "service5": "cd gateway && npm run dev",
+    "service5": "cd gateway && npm run build",
     "service1i": "cd api_servis && npm i",
     "service2i": "cd app_servis && npm i",
     "service3i": "cd auth_server && npm i",
