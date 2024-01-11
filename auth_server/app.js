@@ -9,7 +9,7 @@ const app = express();
 
 
 var corsOptions = {
-    origin: ['http://localhost:5173','http://localhost:3000','http://localhost:8000'],
+    origin: ['http://localhost:5173','http://localhost:3000','http://localhost:8000','https://zinjos-bar.onrender.com'],
     optionsSuccessStatus: 200
 }
 
