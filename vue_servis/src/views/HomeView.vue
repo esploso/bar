@@ -10,7 +10,7 @@ const currentPage = ref(1)
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:'+store.api+'kokteli')
+    const response = await fetch(store.api+'kokteli')
 
     const data = await response.json()
 
