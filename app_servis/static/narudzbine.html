@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Narudzbine</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="tabelaStil" href="tabelaStyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+        let token = '';
+    </script>
+</head>
+<body>
+<main class="container">
+    <div class="row">
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="kokteli.html">Ponuda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="narudzbine.html">Narudzbine</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="btn btn-primary" id="logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <h1>Narudzbine</h1>
+    <div class="narudzbineContainer">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Zakazano vreme</th>
+                <th>Status</th>
+                <th>Cena</th>
+                <th>Stavke</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        token = localStorage.getItem('jwtToken');
+        function formatDate(dateString) {
+            const options = {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+            };
+
+            return new Date(dateString).toLocaleString('en-US', options);
+        }
+        async function fetchDataAndPopulateTable() {
+            try {
+                const response = await fetch('http://localhost:3000/api/narudzbina', {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                // Get the table body element
+                const tableBody = document.getElementById('tableBody');
+
+                // Iterate through each item in the data array
+                data.forEach(item => {
+                    // Create a new row for each item
+                    const row = document.createElement('tr');
+
+                    // Add columns to the row with item data
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = formatDate(item.vremeNarucivanja);
+                    row.appendChild(dateCell);
+
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = item.status;
+                    row.appendChild(statusCell);
+
+                    const priceCell = document.createElement('td');
+
+                    const totalPrice = item.StavkaNarudzbines.reduce((sum, stavka) => sum + (stavka.komada * stavka.koktel.cena), 0);
+                    priceCell.textContent = totalPrice + ' rsd';
+                    row.appendChild(priceCell);
+
+                    const stavkeCell = document.createElement('td');
+                    // Iterate through StavkaNarudzbines and add them to the stavkeCell
+                    item.StavkaNarudzbines.forEach(stavka => {
+                        const span = document.createElement('span');
+                        span.textContent = stavka.koktel.naziv + ' ( ' + stavka.komada + ' )   ';
+                        stavkeCell.appendChild(span);
+                    });
+                    row.appendChild(stavkeCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Call the function to fetch data and populate the table
+        fetchDataAndPopulateTable();
+    </script>
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'http://localhost:3000';
+        }
+        document.getElementById('logout').addEventListener('click', logout);
+    </script>
+</main>
+</body>
+</html>

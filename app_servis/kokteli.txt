@@ -1,0 +1,2 @@
+{"nazivInput":"asdasd","opis":"1121","kategorija":"Alkoholni","cena":"21312"}
+{"nazivInput":"ghgghg","opis":"dsf","kategorija":"Alkoholni","cena":"3423"}

@@ -1,0 +1,128 @@
+<template>
+  <div v-if="store.cart[props.id]"
+    class="flex flex-row w-full relative text-center bg-zinc-300 rounded-2xl px-4 py-3 align-middle items-center justify-between"
+  >
+    <div class="flex flex-row items-center">
+      <img
+        class="inline-block shrink-0 rounded-[.95rem] w-36"
+        :src="strDrinkThumb || placeholderImage"
+        alt="cocktail image"
+      />
+      <div class="text-left pl-6">
+        <a
+          href="javascript:void(0)"
+          class="text-dark font-semibold hover:text-primary text-[1.25rem] transition-colors duration-200 ease-in-out"
+          >{{ props.name }}</a
+        >
+        <span class="block font-medium text-muted">{{ props.price }} rsd</span>
+      </div>
+    </div>
+    <div class="flex flex-col-reverse">
+      <div>
+        <span class="text-lg font-semibold">Total:</span> {{ price }} rsd
+      </div>
+      <div class="items-center gap-2 w-fit px-4 py-2 flex flex-row">
+        <img
+          src="/info.png"
+          @click="showInfo"
+          alt="22"
+          class="w-12 h-12 bg-white p-2 rounded-full cursor-pointer"
+        />
+        <div class="relative">
+          <div
+            @click="minus"
+            class="absolute inset-y-0 start-0.5 flex items-center ps-3 cursor-pointer"
+          >
+            <img src="/minus.png" alt="minus" class="w-4 h-4" />
+          </div>
+          <input
+            type="text"
+            v-model="store.cart[props.id]"
+            disabled
+            class="block px-4 w-24 text-sm text-center text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            autocomplete="off"
+          />
+          <div @click="plus" class="absolute inset-y-0 end-3 flex items-center cursor-pointer">
+            <img src="/plus.png" alt="plus" class="w-4 h-4" />
+          </div>
+        </div>
+        <button
+          @click="removeFromCart"
+          class="bg-red-700 hover:bg-red-800 h-fit w-fit focus:ring-4 focus:outline-none focus:ring-red-300 rounded-full text-sm p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.0"
+            class="w-8 h-8 text-white"
+            viewBox="0 0 512.000000 512.000000"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <g
+              transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+              fill="#ffffff"
+              stroke="none"
+            >
+              <path
+                d="M3746 4304 c-174 -31 -355 -110 -496 -215 -90 -67 -211 -192 -270 -278 -63 -94 -137 -256 -167 -368 -25 -89 -27 -115 -27 -288 -1 -210 12 -286 75 -443 201 -506 747 -810 1285 -717 245 43 454 152 629 329 401 403 456 1009 137 1490 -99 150 -301 321 -465 396 -220 100 -478 134 -701 94z m34 -770 c14 -9 58 -49 98 -88 l72 -71 78 77 c91 90 106 98 169 98 90 0 153 -63 153 -153 0 -63 -8 -78 -98 -169 l-76 -77 77 -79 c82 -85 97 -111 97 -173 0 -73 -46 -129 -121 -149 -66 -18 -103 -1 -196 92 l-82 82 -84 -81 c-62 -61 -93 -84 -125 -92 -113 -31 -219 69 -197 185 5 30 25 57 93 126 l86 88 -86 88 c-90 92 -106 123 -93 188 7 37 57 101 89 114 37 15 120 11 146 -6z"
+              />
+              <path
+                d="M95 3886 c-94 -41 -122 -160 -59 -244 45 -58 67 -62 326 -62 l233 0 48 -183 c26 -100 142 -546 258 -991 116 -445 217 -822 225 -837 19 -38 67 -70 115 -76 35 -5 39 -8 33 -27 -29 -88 -32 -215 -8 -297 37 -125 125 -238 238 -304 275 -160 642 -10 732 300 26 92 21 228 -11 308 -7 16 6 17 184 17 105 0 191 -1 191 -2 0 -2 -7 -25 -16 -53 -17 -58 -20 -196 -4 -254 103 -383 576 -510 848 -227 97 101 142 212 142 351 0 45 -7 104 -15 131 -8 27 -15 50 -15 50 0 1 19 4 42 7 23 3 53 14 67 24 28 20 68 93 73 132 3 22 -2 25 -82 41 -445 91 -827 390 -1029 803 -108 222 -141 359 -148 625 l-5 192 -732 0 -731 0 -60 233 c-33 127 -69 250 -80 272 -12 25 -35 48 -60 62 -39 22 -47 23 -355 22 -240 0 -322 -3 -345 -13z m1723 -2411 c75 -32 115 -90 115 -170 0 -179 -220 -252 -329 -109 -38 50 -45 134 -15 191 44 87 141 124 229 88z m1328 -4 c64 -29 97 -81 102 -155 4 -73 -15 -115 -69 -159 -87 -69 -222 -37 -275 65 -16 31 -21 101 -9 139 21 69 102 129 175 129 19 0 54 -9 76 -19z"
+              />
+            </g>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+import store from '@/store/config.js'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
+
+const $toast = useToast()
+const strDrinkThumb = ref('')
+const placeholderImage = '/drink.png' // Replace with your placeholder image URL
+const props = defineProps(['price', 'name', 'id'])
+const emits = defineEmits()
+
+// Fetch data from the API on component mount
+onMounted(async () => {
+  try {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php')
+    const data = await response.json()
+
+    const cocktail = data.drinks[0]
+    strDrinkThumb.value = cocktail.strDrinkThumb
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+})
+
+const price = computed(() => {
+  return store.cart[props.id] * props.price
+})
+const showInfo = () => {
+  emits('show-info', { id: props.id })
+}
+const showAddToCart = ref(false)
+const plus = () => {
+  if (store.cart[props.id] < 1000) {
+    store.cart[props.id] = store.cart[props.id] + 1
+  }
+}
+const minus = () => {
+  if (store.cart[props.id] > 0) {
+    store.cart[props.id] = store.cart[props.id] - 1
+  }else {
+    removeFromCart()
+  }
+}
+const removeFromCart = () => {
+  store.cart[props.id] = null
+  let instance = $toast.success('Removed from cart!')
+  emits('removed-item', { id: props.id })
+}
+</script>

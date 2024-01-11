@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Kokteli</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="tabelaStil" href="tabelaStyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+        let token = '';
+    </script>
+
+</head>
+<body>
+
+
+<main class="container">
+    <div class="row">
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="kokteli.html">Ponuda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="narudzbine.html">Narudzbine</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="btn btn-primary" id="logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <h1>Kokteli</h1>
+    <div>
+        <button id="osveziBtn" class="btn btn-primary float-end" onclick="osveziTabelu()">Osveži</button>
+        <a href="novi-koktel.html" class="btn btn-primary me-2">Novi koktel</a>
+        <a href="nova-kategorija.html" class="btn btn-primary me-2">Nova kategorija</a>
+        <a href="novi-sastojak.html" class="btn btn-primary me-2">Novi sastojak</a>
+    </div>
+
+    <div class="tabelaContainer">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Kategorija</th>
+                <th>Koktel</th>
+                <th>Cena</th>
+                <th>Akcija</th>
+            </tr>
+            </thead>
+            <tbody id="spisak">
+            </tbody>
+        </table>
+    </div>
+
+</main>
+<script>
+    token = localStorage.getItem('jwtToken');
+    window.addEventListener("load", function () {
+        osveziTabelu();
+    });
+
+
+    function osveziTabelu() {
+        fetch("http://localhost:9000/kokteli/", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("spisak").innerHTML = "";
+                for(let i=0; i<data.length; i++){
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    td1.innerHTML = data[i].Kategorija.naziv;
+                    tr.appendChild(td1);
+                    let td2 = document.createElement("td");
+                    td2.innerHTML = data[i].naziv;
+                    tr.append(td2);
+                    let td3 = document.createElement("td");
+                    td3.innerHTML = data[i].cena;
+                    tr.append(td3);
+                    tr.setAttribute('data-id', data[i].id);
+                    document.getElementById("spisak").appendChild(tr);
+
+
+                    //ovde ide i pridruzivanje click eventa na <button>  Promena cene
+                    let promenaBtn = document.createElement("button");
+                    promenaBtn.classList.add("btn" ,"btn-primary");
+                    promenaBtn.innerHTML = "Promena cene";
+                    promenaBtn.addEventListener("click", function () {
+                        var c = prompt("Unesi novu cenu:");
+                        var id = this.parentNode.parentNode.getAttribute('data-id');
+                        fetch("http://localhost:9000/promeni-cenu/" + id, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ cena: c })	/* ime:vrednost */
+                        })
+                            .then( response=>response.json() )
+                            .then( data=>{
+                                document.querySelectorAll(` #spisak > tr[data-id='${data.id}'] > td:nth-child(2) `)
+                                    .innerHTML = data.cena;
+                            })
+                            .catch( err=>{
+                                alert("Desila se greska");
+                                console.log(err);
+                            });
+
+                    });
+
+                    let izmeniBtn = document.createElement("a");
+                    izmeniBtn.classList.add("btn" ,"btn-primary");
+                    izmeniBtn.innerHTML = "Izmeni";
+                    izmeniBtn.href = `koktel.html?id=${data[i].id}`;
+                    izmeniBtn.style.margin = "0px 10px";
+
+
+                    let btntd = document.createElement("td");
+                    btntd.appendChild(promenaBtn);
+                    btntd.appendChild(izmeniBtn);
+                    tr.appendChild(btntd);
+                    document.getElementById("spisak").appendChild(tr);
+
+
+                }
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+            });
+    }
+
+</script>
+<script>
+    // Function to handle button click, clear local storage, and redirect
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'http://localhost:3000';
+    }
+
+    // Attach the click event listener to the button
+    document.getElementById('logout').addEventListener('click', logout);
+</script>
+<script>
+    function promenaCene() {
+        var c = prompt("Unesi novu cenu:");
+        var id = this.parentNode.parentNode.getAttribute('data-id');
+        console.log(id);
+        fetch("http://localhost:9000/promeni-cenu/" + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ cena: c })	/* ime:vrednost */
+        })
+            .then( response=>response.json() )
+            .then( data=>{
+                document.querySelectorAll(` #spisak > tr[data-id='${data.id}'] > td:nth-child(2) `)
+                    .innerHTML = data.cena;
+            })
+            .catch( err=>{
+                alert("Desila se greska");
+                console.log(err);
+            });
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "checkpoint-3-igor-amaric2519",
+  "version": "1.0.0",
+  "description": "Aleksandar Maric RN25/2019",
+  "main": "index.js",
+  "scripts": {
+    "start:services": "concurrently \"npm run service1\" \"npm run service2\" \"npm run service3\" \"npm run service4\" \"npm run service5\"",
+    "service1": "cd api_servis && npm run dev",
+    "service2": "cd app_servis && npm run dev",
+    "service3": "cd auth_server && npm run dev",
+    "service4": "cd vue_servis && npm run dev",
+    "service5": "cd gateway && npm run dev",
+    "service1i": "cd api_servis && npm i",
+    "service2i": "cd app_servis && npm i",
+    "service3i": "cd auth_server && npm i",
+    "service4i": "cd vue_servis && npm i",
+    "service5i": "cd gateway && npm i",
+    "all:install": "concurrently \"npm run service1i\" \"npm run service2i\" \"npm run service3i\" \"npm run service4i\" \"npm run service5i\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

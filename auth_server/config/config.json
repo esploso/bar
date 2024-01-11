@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "prosofti_skriptbaza",
+    "password": "Zxq&kCb_{5vu",
+    "database": "prosofti_skriptbaza",
+    "host": "217.195.152.155",
+    "dialect": "mariadb"
+  },
+  "test": {
+    "username": "prosofti_skriptbaza",
+    "password": "Zxq&kCb_{5vu",
+    "database": "prosofti_skriptbaza",
+    "host": "217.195.152.155",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "prosofti_skriptbaza",
+    "password": "Zxq&kCb_{5vu",
+    "database": "prosofti_skriptbaza",
+    "host": "217.195.152.155",
+    "dialect": "mysql"
+  }
+}
