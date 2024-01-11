@@ -13,7 +13,7 @@ const currentPage = ref(1)
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:' + store.api + 'kokteli')
+    const response = await fetch(store.api + 'kokteli')
     const data = await response.json()
 
     // Filter drinks where store.cart[key] !== null
@@ -42,7 +42,7 @@ const checkout = async () => {
       cart: store.cart
     };
 
-    const response = await fetch('http://localhost:' + store.api + 'narudzbina/', {
+    const response = await fetch(store.api + 'narudzbina/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
