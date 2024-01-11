@@ -193,7 +193,7 @@ const registerUser = async () => {
   }
 
   try {
-    const response = await fetch('http://localhost:'+store.auth+'register', {
+    const response = await fetch(store.auth+'register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -219,7 +219,7 @@ const registerUser = async () => {
     localStorage.setItem('jwtToken', jwtToken)
     const decoded = jwtDecode(jwtToken)
     if (decoded.admin){
-      window.location.href = 'http://localhost:'+store.admin
+      window.location.href = store.admin
     }else{
       store.loggedIn = true;
       store.token = jwtToken
